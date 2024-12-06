@@ -2,8 +2,10 @@
 made by Tom0427 !!
 """
 import cv2
+import base64
 
-from flask import Flask, render_template
+import os
+from flask import Flask, render_template, request
 
 # Flaskアプリケーションのインスタンスを作成
 app = Flask(
@@ -13,10 +15,13 @@ app = Flask(
 )
 
 
+UPLOAD_FOLDER = './uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 @app.route('/login')
 def login():
-    return "Hello, World!"
-
+    return render_template("login.html")
 
 # ルートエンドポイントにアクセスしたときの処理を定義
 @app.route('/')
@@ -27,6 +32,27 @@ def home():
     }
     return render_template("index.jinja", **data)
 
+@app.route('/upload', methods=['POST'])
+def upload_image():
+    try:
+        # 画像データを受け取る
+        data = request.json.get('image')
+        if not data:
+            return "No image data", 400
+
+        # Base64形式をデコード
+        header, encoded = data.split(',', 1)
+        image_data = base64.b64decode(encoded)
+
+        # ファイル保存
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'captured_image.png')
+        with open(file_path, 'wb') as f:
+            f.write(image_data)
+
+        return "Image uploaded successfully", 200
+    except Exception as e:
+        return str(e), 500
+
 
 def show_cv2_version():
     print(cv2.__version__)
@@ -34,5 +60,4 @@ def show_cv2_version():
 # アプリケーションを実行
 if __name__ == "__main__":
     app.run(debug=True)
-
 
