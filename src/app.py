@@ -3,6 +3,7 @@ made by Tom0427 !!
 """
 import cv2
 import base64
+import hashlib
 
 import os
 from flask import Flask, render_template, request
@@ -13,7 +14,6 @@ app = Flask(
     template_folder="../templates",  # テンプレートフォルダを指定
     static_folder="../static"       # 静的ファイルフォルダを指定
 )
-
 
 UPLOAD_FOLDER = './uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -45,7 +45,30 @@ def upload_image():
         image_data = base64.b64decode(encoded)
 
         # ファイル保存
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'captured_image.png')
+        file_hash_name = hashlib.sha256(image_data).hexdigest()
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], '%s.png' % file_hash_name)
+        with open(file_path, 'wb') as f:
+            f.write(image_data)
+
+        return "Image uploaded successfully", 200
+    except Exception as e:
+        return str(e), 500
+
+@app.route('/register', methods=['POST'])
+def register():
+    try:
+        # 画像データを受け取る
+        data = request.json.get('image')
+        if not data:
+            return "No image data", 400
+
+        # Base64形式をデコード
+        header, encoded = data.split(',', 1)
+        image_data = base64.b64decode(encoded)
+
+        # ファイル保存
+        file_hash_name = hashlib.sha256(image_data).hexdigest()
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], '%s.png' % file_hash_name)
         with open(file_path, 'wb') as f:
             f.write(image_data)
 
