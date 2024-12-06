@@ -2,11 +2,17 @@
 made by Tom0427 !!
 """
 import cv2
+import numpy
 import base64
 import hashlib
 
 import os
 from flask import Flask, render_template, request
+
+
+# my modules
+from face_detector import sampling_face_feature
+
 
 # Flaskアプリケーションのインスタンスを作成
 app = Flask(
@@ -27,11 +33,11 @@ def login():
 @app.route('/')
 def home():
     data = {
-        "title": "Welcome to Flask with Jinja2",
-        "message": "This page is rendered using Jinja2!"
+        "title": "Welcome to 怪しい理科大の秘密サイトへ",
+        "message": "会員制理科大のやばめの情報まとめサイト"
     }
     return render_template("index.jinja", **data)
-
+# ユーザーの認証
 @app.route('/upload', methods=['POST'])
 def upload_image():
     try:
@@ -44,6 +50,8 @@ def upload_image():
         header, encoded = data.split(',', 1)
         image_data = base64.b64decode(encoded)
 
+        sampling_face_feature(image_data)
+        print("world")
         # ファイル保存
         file_hash_name = hashlib.sha256(image_data).hexdigest()
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], '%s.png' % file_hash_name)
@@ -52,8 +60,10 @@ def upload_image():
 
         return "Image uploaded successfully", 200
     except Exception as e:
+        print(e)
         return str(e), 500
 
+# ユーザーの登録
 @app.route('/register', methods=['POST'])
 def register():
     try:
