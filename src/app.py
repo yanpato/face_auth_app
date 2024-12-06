@@ -25,6 +25,9 @@ UPLOAD_FOLDER = './uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+"""
+- [POST] upload function
+"""
 @app.route('/login')
 def login():
     return render_template("login.html")
@@ -37,6 +40,7 @@ def home():
         "message": "会員制理科大のやばめの情報まとめサイト"
     }
     return render_template("index.jinja", **data)
+
 # ユーザーの認証
 @app.route('/upload', methods=['POST'])
 def upload_image():
@@ -51,7 +55,6 @@ def upload_image():
         image_data = base64.b64decode(encoded)
 
         sampling_face_feature(image_data)
-        print("world")
         # ファイル保存
         file_hash_name = hashlib.sha256(image_data).hexdigest()
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], '%s.png' % file_hash_name)
@@ -71,11 +74,9 @@ def register():
         data = request.json.get('image')
         if not data:
             return "No image data", 400
-
         # Base64形式をデコード
         header, encoded = data.split(',', 1)
         image_data = base64.b64decode(encoded)
-
         # ファイル保存
         file_hash_name = hashlib.sha256(image_data).hexdigest()
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], '%s.png' % file_hash_name)

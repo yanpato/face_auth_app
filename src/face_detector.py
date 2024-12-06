@@ -33,6 +33,9 @@ def main():
     for i, aligned_face in enumerate(aligned_faces):
         cv2.imwrite("uploads//face{:03}.jpg".format(i + 1), aligned_face)
 
+"""
+# imageのバイナリデータを受け取って、128次元の特徴を抽出する関数
+"""
 def sampling_face_feature(binary_data):
     # 入力サイズを指定する
     # 画像が3チャンネル以外の場合は3チャンネルに変換する
