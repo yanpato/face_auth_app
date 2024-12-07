@@ -70,8 +70,8 @@ def upload_image():
         return str(e), 500
 
 # ユーザーの登録
-@app.route('/register', methods=['POST'])
-def register():
+@app.route('/register_image', methods=['POST'])
+def register_image():
     try:
         # 画像データを受け取る
         data = request.json.get('image')
@@ -89,6 +89,11 @@ def register():
         return "Image uploaded successfully", 200
     except Exception as e:
         return str(e), 500
+
+@app.route('/register')
+def register():
+    return render_template("register.jinja")
+
 
 # アプリケーションを実行
 if __name__ == "__main__":
