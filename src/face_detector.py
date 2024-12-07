@@ -35,6 +35,10 @@ def main():
 
 """
 # imageのバイナリデータを受け取って、128次元の特徴を抽出する関数
+
+画像に顔が写っていない場合は、顔が写っていないことを示すerrorを返す
+画像に二人以上の人が写っているときもerrorを返す
+
 """
 def sampling_face_feature(binary_data):
     # 入力サイズを指定する
@@ -65,7 +69,8 @@ def sampling_face_feature(binary_data):
     for i, aligned_face in enumerate(aligned_faces):
         cv2.imwrite("uploads//face{:03}.jpg".format(i + 1), aligned_face)
 
-    # face_feature = face_recognizer.feature(aligned_face)
+    face_feature = face_recognizer.feature(aligned_face)
+    print(face_feature)
 
 
 def create_cv2_image_from_binary(binary_data):

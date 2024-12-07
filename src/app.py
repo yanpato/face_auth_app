@@ -87,10 +87,6 @@ def register():
     except Exception as e:
         return str(e), 500
 
-
-def show_cv2_version():
-    print(cv2.__version__)
-
 # アプリケーションを実行
 if __name__ == "__main__":
     app.run(debug=True)

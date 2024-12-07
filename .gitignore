@@ -22,3 +22,6 @@ uploads/
 # image
 *.jpg
 *.png
+
+# environments
+.env
