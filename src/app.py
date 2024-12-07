@@ -11,7 +11,7 @@ from flask import Flask, render_template, request
 
 
 # my modules
-from face_detector import sampling_face_feature
+from face_detector import sampling_face_feature, compare_faces
 
 
 # Flaskアプリケーションのインスタンスを作成
@@ -58,6 +58,9 @@ def upload_image():
         # ファイル保存
         file_hash_name = hashlib.sha256(image_data).hexdigest()
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], '%s.png' % file_hash_name)
+        
+        with open("uploads/face001.jpg", mode="rb") as f:
+            print(compare_faces(sampling_face_feature(image_data), sampling_face_feature(f.read())))
         with open(file_path, 'wb') as f:
             f.write(image_data)
 

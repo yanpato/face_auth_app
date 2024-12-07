@@ -40,7 +40,7 @@ def main():
 画像に二人以上の人が写っているときもerrorを返す
 
 """
-def sampling_face_feature(binary_data):
+def sampling_face_feature(binary_data) -> np.ndarray:
     # 入力サイズを指定する
     # 画像が3チャンネル以外の場合は3チャンネルに変換する
     print("loading image data")
@@ -70,14 +70,31 @@ def sampling_face_feature(binary_data):
         cv2.imwrite("uploads//face{:03}.jpg".format(i + 1), aligned_face)
 
     face_feature = face_recognizer.feature(aligned_face)
-    print(face_feature)
+    # print(face_feature)
+    return face_feature
 
-
+"""
+イメージバイナリデータから、cv2imageオブジェクトを作る
+"""
 def create_cv2_image_from_binary(binary_data):
     # バイナリデータをnumpy配列に変換
     nparr = np.frombuffer(binary_data, np.uint8)
     # OpenCVで画像をデコード
     return cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+"""
+顔の特徴量を比較する関数
+"""
+def compare_faces(feature1:np.ndarray, feature2:np.ndarray):
+    COSINE_THRESHOLD = 0.363
+    face_recognizer = cv2.FaceRecognizerSF.create(PATH_TO_FACE_RECOGNIZER, "")
+    score = face_recognizer.match(feature1, feature2, cv2.FaceRecognizerSF_FR_COSINE)
+    return score
+    # if score > COSINE_THRESHOLD:
+    #     return True, (user_id, cos_score)
+    # return False, ("", 0.0)
+
+
 
 
 if __name__ == "__main__":
