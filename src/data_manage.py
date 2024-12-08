@@ -15,9 +15,9 @@ PASSWORD = os.getenv("PASSWORD")
 HOST = os.getenv("HOST")
 
 """
-databaseから登録時に保存した特徴量を取得
+新しいuser_nameと、顔の特徴量データの情報を挿入
 databaseには
-人の名前と、特徴量とのペアの情報
+人の名前と、特徴量とのペアの情報を入れる
 """
 def register_face_feature(user_name:str, np_array:np.ndarray):
     # NumPy配列をバイナリデータに変換
@@ -40,6 +40,9 @@ def register_face_feature(user_name:str, np_array:np.ndarray):
         print(f"Error: {e}")
 
 
+"""
+ユーザーネームで検索をかけて、見つかった顔の特徴量を返却する
+"""
 def get_user_face_feature_from_database(user_name):
     # データベース接続とクエリ実行
     try:
@@ -60,11 +63,14 @@ def get_user_face_feature_from_database(user_name):
     except Exception as e:
         print(f"Error: {e}")
 
+
+
 if __name__=="__main__":
-    #face_feature_array = np.random.rand(128).astype(np.float32)
-    #user_name = "John Doe"
-    #register_face_feature(user_name, face_feature_array)
+    # face_feature_array = np.random.rand(128).astype(np.float32)
+    # user_name = "John Doe"
+    # register_face_feature(user_name, face_feature_array)
     print(DBNAME, DBUSER, PASSWORD, HOST)
     user_name = "John Doe"
     get_user_face_feature_from_database(user_name)
+
 

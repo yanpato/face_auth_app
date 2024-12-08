@@ -10,8 +10,7 @@ import os
 from flask import Flask, render_template, request
 
 # my modules
-from face_detector import sampling_face_feature, compare_faces
-
+from face_detector import sampling_face_feature, compare_faces, match_faces, sampling_face_feature2,find_all_face_in_image,create_cv2_image_from_binary
 
 # Flaskアプリケーションのインスタンスを作成
 app = Flask(
@@ -67,13 +66,22 @@ def upload_image():
         header, encoded = data.split(',', 1)
         image_data = base64.b64decode(encoded)
 
-        sampling_face_feature(image_data)
+        # イメージの特徴量を計算する
+        # sampling_face_feature(image_data)
+
         # ファイル保存
         file_hash_name = hashlib.sha256(image_data).hexdigest()
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], '%s.png' % file_hash_name)
 
+        aligned_face = find_all_face_in_image(image_data)
+        print(aligned_face)
         with open("uploads/face001.jpg", mode="rb") as f:
-            print(compare_faces(sampling_face_feature(image_data), sampling_face_feature(f.read())))
+            # print(compare_faces(sampling_face_feature(image_data), sampling_face_feature(f.read())))
+            enc1 = sampling_face_feature2(aligned_face) # 新しい画像の特徴量
+            enc2 = sampling_face_feature2(create_cv2_image_from_binary(f.read()))   # もとの画像の特徴量
+            print("hello world" ,enc1.shape, enc2.shape)
+            match_faces(enc1, enc2)
+        cv2.imwrite("uploads/face001.jpg", aligned_face)
         with open(file_path, 'wb') as f:
             f.write(image_data)
 
