@@ -9,6 +9,7 @@ const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const captureButton = document.getElementById('capture');
 const uploadButton = document.getElementById('upload');
+const usernameInput = document.getElementById('username');
 
 // カメラ映像を取得
 navigator.mediaDevices.getUserMedia({ video: true })
@@ -32,7 +33,8 @@ captureButton.addEventListener('click', () => {
 
 // 写真をサーバーに送信
 uploadButton.addEventListener('click', () => {
-    reqfunc(canvas, "register")
+    let username = usernameInput.value;
+    reqfunc(canvas, username, "register")
     .then(response => {
         if (response.ok) {
             alert("Image uploaded successfully!");

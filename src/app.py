@@ -9,7 +9,6 @@ import hashlib
 import os
 from flask import Flask, render_template, request
 
-
 # my modules
 from face_detector import sampling_face_feature, compare_faces
 
@@ -55,6 +54,8 @@ def upload_image():
         # 画像データを受け取る
         data = request.json.get('image')
         request_head = request.json.get('request_head')
+        user_name = request.json.get('user_name')
+        print("userの名前", user_name)
         if not data:
             return "No image data", 400
 
@@ -70,7 +71,7 @@ def upload_image():
         # ファイル保存
         file_hash_name = hashlib.sha256(image_data).hexdigest()
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], '%s.png' % file_hash_name)
-        
+
         with open("uploads/face001.jpg", mode="rb") as f:
             print(compare_faces(sampling_face_feature(image_data), sampling_face_feature(f.read())))
         with open(file_path, 'wb') as f:
