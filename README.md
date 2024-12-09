@@ -29,9 +29,13 @@ CREATE DATABASE face_auth_app;
 #### データーベースの設定を`.env`に書く
 
 `.env`という名前のファイルを作成して、中に設定を書く
+
 上からdatabaseの名前(今回は`face_auth_app`)
+
 データベースのユーザー名(デフォルトでpostgres)
+
 パスワード(自分のやつ)
+
 ホスト名(hostnameのままでok)
 
 ```
