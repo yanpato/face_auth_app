@@ -37,6 +37,11 @@ def login():
     return render_template("login.html")
 
 
+@app.route('/register')
+def register():
+    return render_template("register.jinja")
+
+
 # ルートエンドポイントにアクセスしたときの処理を定義
 @app.route('/')
 def home():
@@ -47,14 +52,17 @@ def home():
     return render_template("index.jinja", **data)
 
 
-# ユーザーの認証
+# POST requestを受け取る
+
+## ユーザーの認証
 @app.route('/upload', methods=['POST'])
 def upload_image():
     try:
-        # 画像データを受け取る
+        # requestデータを受け取る
         data = request.json.get('image')
         request_head = request.json.get('request_head')
         user_name = request.json.get('user_name')
+
         print("userの名前", user_name)
         if not data:
             return "No image data", 400
@@ -63,6 +71,7 @@ def upload_image():
             print("user tried to login register")
         elif request_head == RQHEADER_LOGIN:
             print("user tried to login")
+
         # Base64形式をデコード
         header, encoded = data.split(',', 1)
         image_data = base64.b64decode(encoded)
@@ -82,12 +91,13 @@ def upload_image():
         print(e)
         return str(e), 500
 
-@app.route('/register')
-def register():
-    return render_template("register.jinja")
+def base64_to_bin_image(b64_data):
+    header, encoded = b64_data.split(',', 1)
+    image_data = base64.b64decode(encoded)
+    return image_data
 
 
 # アプリケーションを実行
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug = True)
 
