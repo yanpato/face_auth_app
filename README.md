@@ -38,7 +38,7 @@ CREATE DATABASE face_auth_app;
 
 ホスト名(hostnameのままでok)
 
-```
+```.env
 DBNAME='face_auth_app'
 DBUSER='postgres'
 PASSWORD='your password'
