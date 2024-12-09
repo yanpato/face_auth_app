@@ -1,4 +1,4 @@
-# face auth up
+# face auth app
 
 ## 必要な学習済みモデル
 
@@ -28,7 +28,7 @@ CREATE DATABASE face_auth_app;
 
 #### データーベースの設定を`.env`に書く
 
-`.env`という名前のファイルを作成して、中に設定を書く
+`.env`という名前のファイルをprojectのrootに作成して、中に設定を書く
 
 上からdatabaseの名前(今回は`face_auth_app`)
 
