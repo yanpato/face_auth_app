@@ -24,7 +24,7 @@ CREATE DATABASE face_auth_app;
 
 #### データーベース内にテーブルを作成する
 
-`database/up.sql`の内容を実行する
+[database/up.sql](database/up.sql)の内容を実行する
 
 #### データーベースの設定を`.env`に書く
 
