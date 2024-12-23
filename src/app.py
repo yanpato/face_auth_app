@@ -120,7 +120,7 @@ def upload_image():
         print(e)
         return str(e), 500
 
-@app.route('/login_user', methods=["POST"])
+@app.route('/login_user', methods=["POST", "GET"])
 def login_user():
     print("login_user".center(100,"="))
     try:
@@ -145,8 +145,8 @@ def login_user():
             print("本人ではないです")
             return redirect(url_for("login_failed"))
     except Exception as e:
-        print(e)
-        return str(e), 500
+       print(e)
+       return str(e), 500
 
 
 @app.route('/register_user', methods=["POST"])

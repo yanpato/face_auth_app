@@ -39,6 +39,9 @@ uploadButton.addEventListener('click', () => {
             // alert("ログイン成功");
 	    console.log("ログイン成功");
 	    // console.log('Redirect URL:', response.redirect_url);
+	 if (response.redirected) {
+        window.location.href = response.url;
+    }
         } else {
             alert("ログインに失敗しました");
         }
