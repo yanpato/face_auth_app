@@ -9,7 +9,7 @@
 */
 export function reqfunc(canvas, username, request_head) {
     const dataURL = canvas.toDataURL('image/png');
-    return fetch('/upload', {
+    return fetch(request_head, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

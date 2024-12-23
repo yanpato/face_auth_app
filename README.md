@@ -54,3 +54,6 @@ uv run src/app.py
 
 [http://127.0.0.1:5000/register](http://127.0.0.1:5000/register)にアクセスする
 
+## 技術的課題
+
+- `openCV`の顔認識の精度が悪い

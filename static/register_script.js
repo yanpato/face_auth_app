@@ -34,7 +34,7 @@ captureButton.addEventListener('click', () => {
 // 写真をサーバーに送信
 uploadButton.addEventListener('click', () => {
     let username = usernameInput.value;
-    reqfunc(canvas, username, "register")
+    reqfunc(canvas, username, "/register_user")
     .then(response => {
         if (response.ok) {
             alert("Image uploaded successfully!");

@@ -33,12 +33,14 @@ captureButton.addEventListener('click', () => {
 // 写真をサーバーに送信
 uploadButton.addEventListener('click', () => {
     let username = usernameInput.value;
-    reqfunc(canvas, username, "login")
+    reqfunc(canvas, username, "/login_user")
     .then(response => {
         if (response.ok) {
-            alert("Image uploaded successfully!");
+            // alert("ログイン成功");
+	    console.log("ログイン成功");
+	    // console.log('Redirect URL:', response.redirect_url);
         } else {
-            alert("Failed to upload image.");
+            alert("ログインに失敗しました");
         }
     })
     .catch(err => console.error("Error uploading image: ", err));

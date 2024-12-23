@@ -40,7 +40,7 @@ def register_face_feature(user_name:str, np_array:np.ndarray):
         print(f"Error: {e}")
 
 
-def get_user_face_feature_from_database(user_name):
+def get_user_face_feature_from_database(user_name) -> np.ndarray:
     # データベース接続とクエリ実行
     try:
         with psycopg2.connect(
@@ -56,7 +56,7 @@ def get_user_face_feature_from_database(user_name):
                 if result:
                     face_feature_binary = result[0]
                     face_feature_array = np.frombuffer(face_feature_binary, dtype=np.float32)
-                    print(face_feature_array)
+                    return face_feature_array
     except Exception as e:
         print(f"Error: {e}")
 

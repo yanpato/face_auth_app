@@ -8,6 +8,17 @@ PATH_TO_FACE_DETECTOR = os.path.join("models", "yunet_n_640_640.onnx")
 PATH_TO_FACE_RECOGNIZER = os.path.join("models", "face_recognizer_fast.onnx")
 
 
+
+class NoFaceFoundError(BaseException):
+    def __init__(self):
+        self.message = "顔が検出できなかった場合のエラー"
+        super().__init__(self.message)
+
+class MultiFaceFoundError(BaseException):
+    def __init__(self):
+        self.message = "複数の顔を検出した場合のエラー"
+        super().__init__(self.message)
+
 """
 顔を見つけて、切り取る関数
 """
@@ -67,16 +78,15 @@ def sampling_face_feature(binary_data) -> np.ndarray:
     if len(aligned_faces) == 1:
         pass
     elif len(aligned_faces) > 1:
-        raise BaseException("複数の顔を検出しました")
+        raise MultiFaceFoundError()
     else:
-        raise BaseException("顔を検出できませんでした")
+        raise NoFaceFoundError()
 
     # 特徴を抽出する
     for i, aligned_face in enumerate(aligned_faces):
         cv2.imwrite("uploads//face{:03}.jpg".format(i + 1), aligned_face)
 
     face_feature = face_recognizer.feature(aligned_face)
-
     # print(face_feature)
     return face_feature
 
@@ -98,9 +108,6 @@ def compare_faces(feature1:np.ndarray, feature2:np.ndarray):
     face_recognizer = cv2.FaceRecognizerSF.create(PATH_TO_FACE_RECOGNIZER, "")
     score = face_recognizer.match(feature1, feature2, cv2.FaceRecognizerSF_FR_COSINE)
     return score
-    # if score > COSINE_THRESHOLD:
-    #     return True, (user_id, cos_score)
-    # return False, ("", 0.0)
 
 
 if __name__ == "__main__":
