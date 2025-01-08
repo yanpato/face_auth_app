@@ -1,6 +1,3 @@
-"""
-made by Tom0427 !!
-"""
 import cv2
 import numpy
 import base64
