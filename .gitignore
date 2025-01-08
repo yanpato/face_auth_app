@@ -14,3 +14,14 @@ uploads/
 # vim 
 *.swp
 *.swo
+
+# learned model
+*.onnx
+
+
+# image
+*.jpg
+*.png
+
+# environments
+.env
