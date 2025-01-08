@@ -61,9 +61,6 @@ def get_user_face_feature_from_database(user_name) -> np.ndarray:
         print(f"Error: {e}")
 
 if __name__=="__main__":
-    #face_feature_array = np.random.rand(128).astype(np.float32)
-    #user_name = "John Doe"
-    #register_face_feature(user_name, face_feature_array)
     print(DBNAME, DBUSER, PASSWORD, HOST)
     user_name = "John Doe"
     get_user_face_feature_from_database(user_name)

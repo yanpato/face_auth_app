@@ -25,7 +25,6 @@ app = Flask(
 )
 CORS(app)
 
-
 app.secret_key = os.getenv("SECRET_KEY")
 
 # 必要な定数郡
@@ -36,6 +35,8 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 # request head type
 RQHEADER_REGISTER="register" 
 RQHEADER_LOGIN="login" 
+
+SIMILARITY_BASE = 0.6
 
 """
 - [POST] upload function
@@ -94,7 +95,6 @@ def upload_image():
         print("userの名前", user_name)
         if not data:
             return "No image data", 400
-
         if request_head == RQHEADER_REGISTER:
             # 新しくユーザー登録する場合
             print("user tried to login register")
@@ -104,7 +104,6 @@ def upload_image():
         else:
             # invalid operation
             return str("不正なヘッダーです！"), 500
-
         sampling_face_feature(image_data)
         # ファイル保存
         file_hash_name = hashlib.sha256(image_data).hexdigest()
@@ -174,13 +173,10 @@ def register_user():
                 "message": "登録できませんでした"
             }
             return render_template("index.jinja", **data)
-
-
         return "Image uploaded successfully", 200
     except Exception as e:
         print(e)
         return str(e), 500
-
 
 """
 user_nameと、顔画像から
@@ -192,19 +188,18 @@ def check_user_face(user_name:str, image_data) -> bool:
 #    print("face_feature_array", base_face_feature)
 #    print("unknown_face_feature",unknown_face_feature)
     score = compare_faces(unknown_face_feature, base_face_feature)
-    if 95 < score:
+    print("類似度",score)
+    if SIMILARITY_BASE < score:
         # 本人の場合
         return True
     else:
         # 本人ではない場合
         return False
 
-
 def base64_to_bin_image(b64_data):
     header, encoded = b64_data.split(',', 1)
     image_data = base64.b64decode(encoded)
     return image_data
-
 
 # アプリケーションを実行
 if __name__ == "__main__":

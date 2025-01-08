@@ -7,8 +7,6 @@ PATH_TO_FACE_DETECTOR = os.path.join("models", "yunet_n_640_640.onnx")
 # https://drive.google.com/file/d/1ClK9WiB492c5OZFKveF3XiHCejoOxINW/view
 PATH_TO_FACE_RECOGNIZER = os.path.join("models", "face_recognizer_fast.onnx")
 
-
-
 class NoFaceFoundError(BaseException):
     def __init__(self):
         self.message = "顔が検出できなかった場合のエラー"
@@ -104,7 +102,6 @@ def create_cv2_image_from_binary(binary_data):
 顔の特徴量を比較する関数
 """
 def compare_faces(feature1:np.ndarray, feature2:np.ndarray):
-    COSINE_THRESHOLD = 0.363
     face_recognizer = cv2.FaceRecognizerSF.create(PATH_TO_FACE_RECOGNIZER, "")
     score = face_recognizer.match(feature1, feature2, cv2.FaceRecognizerSF_FR_COSINE)
     return score
